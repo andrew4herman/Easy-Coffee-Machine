@@ -13,5 +13,7 @@ public class Main {
         do {
             coffeeMachine.interact(scanner.nextLine());
         } while (coffeeMachine.getMachineState() != CoffeeMachineState.TURNED_OFF);
+
+        scanner.close();
     }
 }

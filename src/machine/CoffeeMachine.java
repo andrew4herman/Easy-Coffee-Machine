@@ -24,13 +24,11 @@ public class CoffeeMachine {
 
     public void interact(String userOption) {
         try {
-            if (machineState == CoffeeMachineState.CHOOSING_AN_ACTION)
-                chooseAction(userOption);
-            else if (machineState == CoffeeMachineState.CHOOSING_A_COFFEE)
-                chooseCoffee(userOption);
-            else if (machineState == CoffeeMachineState.FILL)
-                fill(userOption);
-
+            switch (machineState) {
+                case CHOOSING_AN_ACTION -> chooseAction(userOption);
+                case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
+                case FILL -> fill(userOption);
+            }
         } catch (IllegalArgumentException exception) {
             showMessage(exception.getMessage());
         }

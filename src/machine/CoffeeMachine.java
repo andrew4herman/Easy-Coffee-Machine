@@ -64,6 +64,7 @@ public class CoffeeMachine {
                 coffee = Coffee.CAPPUCCINO;
                 break;
             case "back":
+                machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
                 return;
             default:
                 throw new IllegalArgumentException("Incorrect option. Choose coffee number or return back.");

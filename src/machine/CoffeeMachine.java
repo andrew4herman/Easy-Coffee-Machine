@@ -1,5 +1,7 @@
 package machine;
 
+import java.util.Arrays;
+
 public class CoffeeMachine {
 
     private CoffeeMachineState machineState;
@@ -98,12 +100,18 @@ public class CoffeeMachine {
     }
 
     private void fill(String ingredients) throws Exception {
-        String[] resources = ingredients.split(" ");
         try {
-            water += Integer.parseInt(resources[0]);
-            milk += Integer.parseInt(resources[1]);
-            coffeeBeans += Integer.parseInt(resources[2]);
-            cups += Integer.parseInt(resources[3]);
+            int[] resources = Arrays.stream(ingredients.split(" "))
+                    .mapToInt(Integer::parseInt)
+                    .filter(num -> num > 0)
+                    .toArray();
+            
+            if (resources.length != 4) throw new Exception();
+
+            water += resources[0];
+            milk += resources[1];
+            coffeeBeans += resources[2];
+            cups += resources[3];
         } catch (Exception e) {
             throw new Exception("Incorrect input. Please enter correct amount of ingredients.");
         }

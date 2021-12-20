@@ -29,14 +29,14 @@ public class CoffeeMachine {
                 case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
                 case FILL -> fill(userOption);
             }
-        } catch (IllegalArgumentException exception) {
+        } catch (Exception exception) {
             showMessage(exception.getMessage());
         }
 
         showMessage(machineState.getMessage());
     }
 
-    private void chooseAction(String action) throws IllegalArgumentException {
+    private void chooseAction(String action) throws Exception {
         switch (action) {
             case "buy" -> machineState = CoffeeMachineState.CHOOSING_A_COFFEE;
             case "fill" -> machineState = CoffeeMachineState.FILL;
@@ -46,28 +46,22 @@ public class CoffeeMachine {
                 showMessage("Bye!");
                 machineState = CoffeeMachineState.TURNED_OFF;
             }
-            default -> throw new IllegalArgumentException("Incorrect action. Please try again.");
+            default -> throw new Exception("Incorrect action. Please try again.");
         }
     }
 
-    private void chooseCoffee(String option) throws IllegalArgumentException {
+    private void chooseCoffee(String option) throws Exception {
         Coffee coffee;
 
         switch (option) {
-            case "1":
-                coffee = Coffee.ESPRESSO;
-                break;
-            case "2":
-                coffee = Coffee.LATTE;
-                break;
-            case "3":
-                coffee = Coffee.CAPPUCCINO;
-                break;
-            case "back":
+            case "1" -> coffee = Coffee.ESPRESSO;
+            case "2" -> coffee = Coffee.LATTE;
+            case "3" -> coffee = Coffee.CAPPUCCINO;
+            case "back" -> {
                 machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
                 return;
-            default:
-                throw new IllegalArgumentException("Incorrect option. Choose coffee number or return back.");
+            }
+            default -> throw new Exception("Incorrect option. Choose coffee number or return back.");
         }
 
         checkIngredientsFor(coffee);
@@ -76,16 +70,21 @@ public class CoffeeMachine {
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
     }
 
-    private void checkIngredientsFor(Coffee coffee) throws IllegalArgumentException {
+    private void checkIngredientsFor(Coffee coffee) throws Exception {
         String error = "";
 
-        if (cups < 1) error = "cups";
-        if (coffee.getCoffeeBeans() > coffeeBeans) error = "coffee beans";
-        if (coffee.getMilk() > milk) error = "milk";
-        if (coffee.getWater() > water) error = "water";
+        if (coffee.getWater() > water) {
+            error = "water";
+        } else if (coffee.getMilk() > milk) {
+            error = "milk";
+        } else if (coffee.getCoffeeBeans() > coffeeBeans) {
+            error = "coffee beans";
+        } else if (cups < 1) {
+            error = "cups";
+        }
 
         if (!error.isEmpty())
-            throw new IllegalArgumentException(String.format("Sorry, not enough %s!", error));
+            throw new Exception(String.format("Sorry, not enough %s!", error));
     }
 
     private void makeCoffee(Coffee coffee) {
@@ -98,7 +97,7 @@ public class CoffeeMachine {
         cups--;
     }
 
-    private void fill(String ingredients) throws IllegalArgumentException {
+    private void fill(String ingredients) throws Exception {
         String[] resources = ingredients.split(" ");
         try {
             water += Integer.parseInt(resources[0]);
@@ -106,7 +105,7 @@ public class CoffeeMachine {
             coffeeBeans += Integer.parseInt(resources[2]);
             cups += Integer.parseInt(resources[3]);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Incorrect input. Please enter correct amount of ingredients.");
+            throw new Exception("Incorrect input. Please enter correct amount of ingredients.");
         }
 
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;

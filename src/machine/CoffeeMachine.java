@@ -3,6 +3,7 @@ package machine;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CoffeeMachine {
 
@@ -45,7 +46,22 @@ public class CoffeeMachine {
     public void interact(String userOption) {
         switch (machineState) {
             case CHOOSING_AN_ACTION -> chooseAction(userOption);
-            case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
+            case CHOOSING_A_COFFEE -> {
+                if ("back".equals(userOption)) {
+                    machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
+                } else {
+                    Optional<Coffee> coffee = chooseCoffee(userOption);
+
+                    if (coffee.isEmpty()) {
+                        showMessage("Incorrect option. Choose coffee number or return back.");
+                    } else {
+                        makeCoffeeIfEnough(coffee.get());
+                    }
+                }
+
+                chooseCoffee(userOption);
+            }
+
             case FILL -> {
                 int[] resources = Arrays.stream(userOption.split(" "))
                         .mapToInt(Integer::parseInt)
@@ -77,23 +93,16 @@ public class CoffeeMachine {
         }
     }
 
-    private void chooseCoffee(String option) {
-        Coffee coffee;
+    private Optional<Coffee> chooseCoffee(String option) {
+        return switch (option) {
+            case "1" -> Optional.of(Coffee.ESPRESSO);
+            case "2" -> Optional.of(Coffee.LATTE);
+            case "3" -> Optional.of(Coffee.CAPPUCCINO);
+            default -> Optional.empty();
+        };
+    }
 
-        switch (option) {
-            case "1" -> coffee = Coffee.ESPRESSO;
-            case "2" -> coffee = Coffee.LATTE;
-            case "3" -> coffee = Coffee.CAPPUCCINO;
-            case "back" -> {
-                machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
-                return;
-            }
-            default -> {
-                showMessage("Incorrect option. Choose coffee number or return back.");
-                return;
-            }
-        }
-
+    private void makeCoffeeIfEnough(Coffee coffee) {
         try {
             checkIngredientsFor(coffee);
             makeCoffee(coffee);

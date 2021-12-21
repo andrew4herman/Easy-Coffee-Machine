@@ -33,7 +33,18 @@ public class CoffeeMachine {
             switch (machineState) {
                 case CHOOSING_AN_ACTION -> chooseAction(userOption);
                 case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
-                case FILL -> fill(userOption);
+                case FILL -> {
+                    int[] resources = Arrays.stream(userOption.split(" "))
+                            .mapToInt(Integer::parseInt)
+                            .filter(num -> num > 0)
+                            .toArray();
+
+                    if (resources.length != 4) {
+                        throw new Exception();
+                    } else {
+                        fill(resources);
+                    }
+                }
             }
         } catch (Exception exception) {
             showMessage(exception.getMessage());
@@ -104,24 +115,11 @@ public class CoffeeMachine {
         cups--;
     }
 
-    private void fill(String ingredients) throws Exception {
-        try {
-            int[] resources = Arrays.stream(ingredients.split(" "))
-                    .mapToInt(Integer::parseInt)
-                    .filter(num -> num > 0)
-                    .toArray();
-
-            if (resources.length != 4) {
-                throw new Exception();
-            }
-
+    private void fill(int[] resources) {
             water += resources[0];
             milk += resources[1];
             coffeeBeans += resources[2];
             cups += resources[3];
-        } catch (Exception e) {
-            throw new Exception("Incorrect input. Please enter correct amount of ingredients.");
-        }
 
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
     }

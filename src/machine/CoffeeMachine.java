@@ -5,7 +5,11 @@ import java.util.Arrays;
 public class CoffeeMachine {
 
     private CoffeeMachineState machineState;
-    private int money, water, milk, coffeeBeans, cups;
+    private int money;
+    private int water;
+    private int milk;
+    private int coffeeBeans;
+    private int cups;
 
     public CoffeeMachine() {
         machineState = CoffeeMachineState.TURNED_OFF;
@@ -105,7 +109,7 @@ public class CoffeeMachine {
                     .mapToInt(Integer::parseInt)
                     .filter(num -> num > 0)
                     .toArray();
-            
+
             if (resources.length != 4) throw new Exception();
 
             water += resources[0];

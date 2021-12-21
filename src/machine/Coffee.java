@@ -6,7 +6,10 @@ public enum Coffee {
     LATTE(350, 75, 20, 7),
     CAPPUCCINO(200, 100, 12, 6);
 
-    private final int water, milk, coffeeBeans, price;
+    private final int water;
+    private final int milk;
+    private final int coffeeBeans;
+    private final int price;
 
     Coffee(int water, int milk, int coffeeBeans, int price) {
         this.water = water;

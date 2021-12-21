@@ -40,7 +40,7 @@ public class CoffeeMachine {
                             .toArray();
 
                     if (resources.length != 4) {
-                        throw new Exception();
+                        showMessage("Incorrect input. Please enter correct amount of ingredients.");
                     } else {
                         fill(resources);
                     }
@@ -53,7 +53,7 @@ public class CoffeeMachine {
         showMessage(machineState.getMessage());
     }
 
-    private void chooseAction(String action) throws Exception {
+    private void chooseAction(String action) {
         switch (action) {
             case "buy" -> machineState = CoffeeMachineState.CHOOSING_A_COFFEE;
             case "fill" -> machineState = CoffeeMachineState.FILL;
@@ -63,11 +63,11 @@ public class CoffeeMachine {
                 showMessage("Bye!");
                 machineState = CoffeeMachineState.TURNED_OFF;
             }
-            default -> throw new Exception("Incorrect action. Please try again.");
+            default -> showMessage("Incorrect action. Please try again.");
         }
     }
 
-    private void chooseCoffee(String option) throws Exception {
+    private void chooseCoffee(String option) {
         Coffee coffee;
 
         switch (option) {
@@ -78,13 +78,20 @@ public class CoffeeMachine {
                 machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
                 return;
             }
-            default -> throw new Exception("Incorrect option. Choose coffee number or return back.");
+            default -> {
+                showMessage("Incorrect option. Choose coffee number or return back.");
+                return;
+            }
         }
 
-        checkIngredientsFor(coffee);
-        makeCoffee(coffee);
+        try {
+            checkIngredientsFor(coffee);
+            makeCoffee(coffee);
 
-        machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
+            machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void checkIngredientsFor(Coffee coffee) throws Exception {
@@ -116,10 +123,10 @@ public class CoffeeMachine {
     }
 
     private void fill(int[] resources) {
-            water += resources[0];
-            milk += resources[1];
-            coffeeBeans += resources[2];
-            cups += resources[3];
+        water += resources[0];
+        milk += resources[1];
+        coffeeBeans += resources[2];
+        cups += resources[3];
 
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
     }

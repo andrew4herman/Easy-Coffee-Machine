@@ -89,8 +89,9 @@ public class CoffeeMachine {
             error = "cups";
         }
 
-        if (!error.isEmpty())
+        if (!error.isEmpty()) {
             throw new Exception(String.format("Sorry, not enough %s!", error));
+        }
     }
 
     private void makeCoffee(Coffee coffee) {
@@ -110,7 +111,9 @@ public class CoffeeMachine {
                     .filter(num -> num > 0)
                     .toArray();
 
-            if (resources.length != 4) throw new Exception();
+            if (resources.length != 4) {
+                throw new Exception();
+            }
 
             water += resources[0];
             milk += resources[1];

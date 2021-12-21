@@ -1,10 +1,14 @@
 package machine;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CoffeeMachine {
 
+    private final Map<Coffee, Integer> priceList;
     private CoffeeMachineState machineState;
+
     private int money;
     private int mlOfWater;
     private int mlOfMilk;
@@ -12,12 +16,22 @@ public class CoffeeMachine {
     private int cups;
 
     public CoffeeMachine() {
+        priceList = new HashMap<>();
         machineState = CoffeeMachineState.TURNED_OFF;
+
         money = 550;
         mlOfWater = 400;
         mlOfMilk = 540;
         grOfCoffeeBeans = 120;
         cups = 9;
+
+        setPriceList();
+    }
+
+    private void setPriceList() {
+        priceList.put(Coffee.ESPRESSO, 4);
+        priceList.put(Coffee.LATTE, 7);
+        priceList.put(Coffee.CAPPUCCINO, 6);
     }
 
     public void pressPowerButton() {
@@ -111,7 +125,7 @@ public class CoffeeMachine {
     private void makeCoffee(Coffee coffee) {
         showMessage("I have enough resources, making you a coffee!");
 
-        money += coffee.getPrice();
+        money += priceList.get(coffee);
         mlOfWater -= coffee.getMlOfWater();
         mlOfMilk -= coffee.getMlOfMilk();
         grOfCoffeeBeans -= coffee.getGrOfCoffeeBeans();

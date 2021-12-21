@@ -6,17 +6,17 @@ public class CoffeeMachine {
 
     private CoffeeMachineState machineState;
     private int money;
-    private int water;
-    private int milk;
-    private int coffeeBeans;
+    private int mlOfWater;
+    private int mlOfMilk;
+    private int grOfCoffeeBeans;
     private int cups;
 
     public CoffeeMachine() {
         machineState = CoffeeMachineState.TURNED_OFF;
         money = 550;
-        water = 400;
-        milk = 540;
-        coffeeBeans = 120;
+        mlOfWater = 400;
+        mlOfMilk = 540;
+        grOfCoffeeBeans = 120;
         cups = 9;
     }
 
@@ -93,11 +93,11 @@ public class CoffeeMachine {
     private void checkIngredientsFor(Coffee coffee) throws Exception {
         String error = "";
 
-        if (coffee.getWater() > water) {
+        if (coffee.getMlOfWater() > mlOfWater) {
             error = "water";
-        } else if (coffee.getMilk() > milk) {
+        } else if (coffee.getMlOfMilk() > mlOfMilk) {
             error = "milk";
-        } else if (coffee.getCoffeeBeans() > coffeeBeans) {
+        } else if (coffee.getGrOfCoffeeBeans() > grOfCoffeeBeans) {
             error = "coffee beans";
         } else if (cups < 1) {
             error = "cups";
@@ -112,16 +112,16 @@ public class CoffeeMachine {
         showMessage("I have enough resources, making you a coffee!");
 
         money += coffee.getPrice();
-        water -= coffee.getWater();
-        milk -= coffee.getMilk();
-        coffeeBeans -= coffee.getCoffeeBeans();
+        mlOfWater -= coffee.getMlOfWater();
+        mlOfMilk -= coffee.getMlOfMilk();
+        grOfCoffeeBeans -= coffee.getGrOfCoffeeBeans();
         cups--;
     }
 
     private void fill(int[] resources) {
-        water += resources[0];
-        milk += resources[1];
-        coffeeBeans += resources[2];
+        mlOfWater += resources[0];
+        mlOfMilk += resources[1];
+        grOfCoffeeBeans += resources[2];
         cups += resources[3];
 
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
@@ -135,7 +135,7 @@ public class CoffeeMachine {
                         %d g of coffee beans
                         %d disposable cups
                         $%d of money""",
-                water, milk, coffeeBeans, cups, money)
+                mlOfWater, mlOfMilk, grOfCoffeeBeans, cups, money)
         );
     }
 

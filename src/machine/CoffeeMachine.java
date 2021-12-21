@@ -29,25 +29,21 @@ public class CoffeeMachine {
     }
 
     public void interact(String userOption) {
-        try {
-            switch (machineState) {
-                case CHOOSING_AN_ACTION -> chooseAction(userOption);
-                case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
-                case FILL -> {
-                    int[] resources = Arrays.stream(userOption.split(" "))
-                            .mapToInt(Integer::parseInt)
-                            .filter(num -> num > 0)
-                            .toArray();
+        switch (machineState) {
+            case CHOOSING_AN_ACTION -> chooseAction(userOption);
+            case CHOOSING_A_COFFEE -> chooseCoffee(userOption);
+            case FILL -> {
+                int[] resources = Arrays.stream(userOption.split(" "))
+                        .mapToInt(Integer::parseInt)
+                        .filter(num -> num > 0)
+                        .toArray();
 
-                    if (resources.length != 4) {
-                        showMessage("Incorrect input. Please enter correct amount of ingredients.");
-                    } else {
-                        fill(resources);
-                    }
+                if (resources.length != 4) {
+                    showMessage("Incorrect input. Please enter correct amount of ingredients.");
+                } else {
+                    fill(resources);
                 }
             }
-        } catch (Exception exception) {
-            showMessage(exception.getMessage());
         }
 
         showMessage(machineState.getMessage());

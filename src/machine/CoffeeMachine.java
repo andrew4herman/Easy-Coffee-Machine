@@ -38,7 +38,7 @@ public class CoffeeMachine {
 
     public void interact(String userOption) {
         switch (machineState) {
-            case CHOOSING_AN_ACTION -> chooseActionOp(userOption);
+            case CHOOSING_AN_ACTION -> makeAction(userOption);
             case CHOOSING_A_COFFEE -> chooseCoffeeOp(userOption);
             case FILL -> fillOp(userOption);
         }
@@ -73,7 +73,7 @@ public class CoffeeMachine {
         }
     }
 
-    private void chooseActionOp(String action) {
+    private void makeAction(String action) {
         switch (action) {
             case "buy" -> machineState = CoffeeMachineState.CHOOSING_A_COFFEE;
             case "fill" -> machineState = CoffeeMachineState.FILL;

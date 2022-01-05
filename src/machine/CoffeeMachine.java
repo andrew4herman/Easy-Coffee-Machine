@@ -10,21 +10,15 @@ public class CoffeeMachine {
     private final Map<Coffee, Integer> priceList;
     private CoffeeMachineState machineState;
 
+    private final ResourcesContainer container;
     private int money;
-    private int mlOfWater;
-    private int mlOfMilk;
-    private int grOfCoffeeBeans;
-    private int cups;
 
     public CoffeeMachine() {
         priceList = new HashMap<>();
         machineState = CoffeeMachineState.TURNED_OFF;
 
+        container = new ResourcesContainer(400, 540, 120, 9);
         money = 550;
-        mlOfWater = 400;
-        mlOfMilk = 540;
-        grOfCoffeeBeans = 120;
-        cups = 9;
 
         setPriceList();
     }
@@ -119,13 +113,13 @@ public class CoffeeMachine {
     private void checkIngredientsFor(Coffee coffee) throws Exception {
         String error = "";
 
-        if (coffee.getMlOfWater() > mlOfWater) {
+        if (coffee.getMlOfWater() > container.getMlOfWater()) {
             error = "water";
-        } else if (coffee.getMlOfMilk() > mlOfMilk) {
+        } else if (coffee.getMlOfMilk() > container.getMlOfMilk()) {
             error = "milk";
-        } else if (coffee.getGrOfCoffeeBeans() > grOfCoffeeBeans) {
+        } else if (coffee.getGrOfCoffeeBeans() > container.getGrOfCoffeeBeans()) {
             error = "coffee beans";
-        } else if (cups < 1) {
+        } else if (container.getCups() < 1) {
             error = "cups";
         }
 
@@ -138,17 +132,22 @@ public class CoffeeMachine {
         showMessage("I have enough resources, making you a coffee!");
 
         money += priceList.get(coffee);
-        mlOfWater -= coffee.getMlOfWater();
-        mlOfMilk -= coffee.getMlOfMilk();
-        grOfCoffeeBeans -= coffee.getGrOfCoffeeBeans();
-        cups--;
+        container.useResources(
+                coffee.getMlOfWater(),
+                coffee.getMlOfMilk(),
+                coffee.getGrOfCoffeeBeans(),
+                1
+        );
+
     }
 
     private void fill(int[] resources) {
-        mlOfWater += resources[0];
-        mlOfMilk += resources[1];
-        grOfCoffeeBeans += resources[2];
-        cups += resources[3];
+        container.addResources(
+                resources[0], // Water
+                resources[1], // Milk
+                resources[2], // Coffee beans
+                resources[3]  // Cups
+        );
 
         machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
     }
@@ -161,7 +160,11 @@ public class CoffeeMachine {
                         %d g of coffee beans
                         %d disposable cups
                         $%d of money""",
-                mlOfWater, mlOfMilk, grOfCoffeeBeans, cups, money)
+                container.getMlOfWater(),
+                container.getMlOfMilk(),
+                container.getGrOfCoffeeBeans(),
+                container.getCups(),
+                money)
         );
     }
 

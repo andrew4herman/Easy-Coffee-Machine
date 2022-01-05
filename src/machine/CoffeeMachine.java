@@ -3,21 +3,20 @@ package machine;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class CoffeeMachine {
 
-    private final Map<Coffee, Integer> priceList;
+    private final ResourcesContainer container;
     private CoffeeMachineState machineState;
 
-    private final ResourcesContainer container;
+    private final Map<Coffee, Integer> priceList;
     private int money;
 
     public CoffeeMachine() {
-        priceList = new HashMap<>();
+        container = new ResourcesContainer(400, 540, 120, 9);
         machineState = CoffeeMachineState.TURNED_OFF;
 
-        container = new ResourcesContainer(400, 540, 120, 9);
+        priceList = new HashMap<>();
         money = 550;
 
         setPriceList();
@@ -80,10 +79,7 @@ public class CoffeeMachine {
             case "fill" -> machineState = CoffeeMachineState.FILL;
             case "remaining" -> displayRemaining();
             case "take" -> take();
-            case "exit" -> {
-                showMessage("Bye!");
-                machineState = CoffeeMachineState.TURNED_OFF;
-            }
+            case "exit" -> exit();
             default -> showMessage("Incorrect action. Please try again.");
         }
     }
@@ -148,6 +144,11 @@ public class CoffeeMachine {
     private void take() {
         showMessage(String.format("I gave you $%d", money));
         money = 0;
+    }
+
+    private void exit() {
+        showMessage("Bye!");
+        machineState = CoffeeMachineState.TURNED_OFF;
     }
 
     private void showMessage(String message) {

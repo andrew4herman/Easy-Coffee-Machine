@@ -45,41 +45,44 @@ public class CoffeeMachine {
 
     public void interact(String userOption) {
         switch (machineState) {
-            case CHOOSING_AN_ACTION -> chooseAction(userOption);
-            case CHOOSING_A_COFFEE -> {
-                if ("back".equals(userOption)) {
-                    machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
-                } else {
-                    Optional<Coffee> coffee = chooseCoffee(userOption);
-
-                    if (coffee.isEmpty()) {
-                        showMessage("Incorrect option. Choose coffee number or return back.");
-                    } else {
-                        makeCoffeeIfEnough(coffee.get());
-                    }
-                }
-
-                chooseCoffee(userOption);
-            }
-
-            case FILL -> {
-                int[] resources = Arrays.stream(userOption.split(" "))
-                        .mapToInt(Integer::parseInt)
-                        .filter(num -> num > 0)
-                        .toArray();
-
-                if (resources.length != 4) {
-                    showMessage("Incorrect input. Please enter correct amount of ingredients.");
-                } else {
-                    fill(resources);
-                }
-            }
+            case CHOOSING_AN_ACTION -> chooseActionOp(userOption);
+            case CHOOSING_A_COFFEE -> chooseCoffeeOp(userOption);
+            case FILL -> fillOp(userOption);
         }
 
         showMessage(machineState.getMessage());
     }
 
-    private void chooseAction(String action) {
+    private void fillOp(String userOption) {
+        int[] resources = Arrays.stream(userOption.split(" "))
+                .mapToInt(Integer::parseInt)
+                .filter(num -> num > 0)
+                .toArray();
+
+        if (resources.length != 4) {
+            showMessage("Incorrect input. Please enter correct amount of ingredients.");
+        } else {
+            fill(resources);
+        }
+    }
+
+    private void chooseCoffeeOp(String userOption) {
+        if ("back".equals(userOption)) {
+            machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
+        } else {
+            Optional<Coffee> coffee = chooseCoffee(userOption);
+
+            if (coffee.isEmpty()) {
+                showMessage("Incorrect option. Choose coffee number or return back.");
+            } else {
+                makeCoffeeIfEnough(coffee.get());
+            }
+        }
+
+        chooseCoffee(userOption);
+    }
+
+    private void chooseActionOp(String action) {
         switch (action) {
             case "buy" -> machineState = CoffeeMachineState.CHOOSING_A_COFFEE;
             case "fill" -> machineState = CoffeeMachineState.FILL;

@@ -37,7 +37,24 @@ public class ResourcesContainer {
         this.cups += cups;
     }
 
-    public void useResources(int mlOfWater, int mlOfMilk, int grOfCoffeeBeans, int cups) {
-        addResources(-mlOfWater, -mlOfMilk, -grOfCoffeeBeans, -cups);
+    public void useResources(int mlOfWater, int mlOfMilk, int grOfCoffeeBeans, int cups)
+            throws NotEnoughResourcesException {
+        String error = "";
+
+        if (mlOfWater > this.getMlOfWater()) {
+            error = "water";
+        } else if (mlOfMilk > this.getMlOfMilk()) {
+            error = "milk";
+        } else if (grOfCoffeeBeans > this.getGrOfCoffeeBeans()) {
+            error = "coffee beans";
+        } else if (cups > this.cups) {
+            error = "cups";
+        }
+
+        if (!error.isEmpty()) {
+            throw new NotEnoughResourcesException(String.format("Sorry, not enough %s!", error));
+        } else {
+            addResources(-mlOfWater, -mlOfMilk, -grOfCoffeeBeans, -cups);
+        }
     }
 }

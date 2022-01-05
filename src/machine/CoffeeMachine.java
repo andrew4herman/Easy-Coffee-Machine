@@ -101,44 +101,23 @@ public class CoffeeMachine {
 
     private void makeCoffeeIfEnough(Coffee coffee) {
         try {
-            checkIngredientsFor(coffee);
             makeCoffee(coffee);
-
             machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
-        } catch (Exception e) {
+        } catch (NotEnoughResourcesException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void checkIngredientsFor(Coffee coffee) throws Exception {
-        String error = "";
-
-        if (coffee.getMlOfWater() > container.getMlOfWater()) {
-            error = "water";
-        } else if (coffee.getMlOfMilk() > container.getMlOfMilk()) {
-            error = "milk";
-        } else if (coffee.getGrOfCoffeeBeans() > container.getGrOfCoffeeBeans()) {
-            error = "coffee beans";
-        } else if (container.getCups() < 1) {
-            error = "cups";
-        }
-
-        if (!error.isEmpty()) {
-            throw new Exception(String.format("Sorry, not enough %s!", error));
-        }
-    }
-
-    private void makeCoffee(Coffee coffee) {
-        showMessage("I have enough resources, making you a coffee!");
-
-        money += priceList.get(coffee);
+    private void makeCoffee(Coffee coffee) throws NotEnoughResourcesException {
         container.useResources(
                 coffee.getMlOfWater(),
                 coffee.getMlOfMilk(),
                 coffee.getGrOfCoffeeBeans(),
                 1
         );
+        money += priceList.get(coffee);
 
+        showMessage("I have enough resources, making you a coffee!");
     }
 
     private void fill(int[] resources) {

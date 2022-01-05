@@ -64,16 +64,14 @@ public class CoffeeMachine {
         if ("back".equals(userOption)) {
             machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
         } else {
-            Optional<Coffee> coffee = chooseCoffee(userOption);
+            Coffee coffee = chooseCoffee(userOption);
 
-            if (coffee.isEmpty()) {
+            if (coffee == Coffee.NONE) {
                 showMessage("Incorrect option. Choose coffee number or return back.");
             } else {
-                makeCoffeeIfEnough(coffee.get());
+                tryToMakeCoffee(coffee);
             }
         }
-
-        chooseCoffee(userOption);
     }
 
     private void chooseActionOp(String action) {
@@ -90,16 +88,16 @@ public class CoffeeMachine {
         }
     }
 
-    private Optional<Coffee> chooseCoffee(String option) {
+    private Coffee chooseCoffee(String option) {
         return switch (option) {
-            case "1" -> Optional.of(Coffee.ESPRESSO);
-            case "2" -> Optional.of(Coffee.LATTE);
-            case "3" -> Optional.of(Coffee.CAPPUCCINO);
-            default -> Optional.empty();
+            case "1" -> Coffee.ESPRESSO;
+            case "2" -> Coffee.LATTE;
+            case "3" -> Coffee.CAPPUCCINO;
+            default -> Coffee.NONE;
         };
     }
 
-    private void makeCoffeeIfEnough(Coffee coffee) {
+    private void tryToMakeCoffee(Coffee coffee) {
         try {
             makeCoffee(coffee);
             machineState = CoffeeMachineState.CHOOSING_AN_ACTION;

@@ -95,23 +95,23 @@ public class CoffeeMachine {
 
     private void tryToMakeCoffee(Coffee coffee) {
         try {
-            makeCoffee(coffee);
+            takeIngredientsFor(coffee);
+            money += priceList.get(coffee);
+
+            showMessage("I have enough resources, making you a coffee!");
             machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
         } catch (NotEnoughResourcesException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void makeCoffee(Coffee coffee) throws NotEnoughResourcesException {
+    private void takeIngredientsFor(Coffee coffee) throws NotEnoughResourcesException {
         container.useResources(
                 coffee.getMlOfWater(),
                 coffee.getMlOfMilk(),
                 coffee.getGrOfCoffeeBeans(),
                 1
         );
-        money += priceList.get(coffee);
-
-        showMessage("I have enough resources, making you a coffee!");
     }
 
     private void fill(int[] resources) {

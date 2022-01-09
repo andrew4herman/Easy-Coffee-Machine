@@ -39,14 +39,14 @@ public class CoffeeMachine {
     public void interact(String userOption) {
         switch (machineState) {
             case CHOOSING_AN_ACTION -> makeAction(userOption);
-            case CHOOSING_A_COFFEE -> chooseCoffeeOp(userOption);
-            case FILL -> fillOp(userOption);
+            case CHOOSING_A_COFFEE -> chooseCoffeeProcess(userOption);
+            case FILL -> fillProcess(userOption);
         }
 
         showMessage(machineState.getMessage());
     }
 
-    private void fillOp(String userOption) {
+    private void fillProcess(String userOption) {
         int[] resources = Arrays.stream(userOption.split(" "))
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num > 0)
@@ -59,7 +59,7 @@ public class CoffeeMachine {
         }
     }
 
-    private void chooseCoffeeOp(String userOption) {
+    private void chooseCoffeeProcess(String userOption) {
         if ("back".equals(userOption)) {
             machineState = CoffeeMachineState.CHOOSING_AN_ACTION;
         } else {

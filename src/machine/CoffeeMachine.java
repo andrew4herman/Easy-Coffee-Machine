@@ -1,33 +1,32 @@
 package machine;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * CoffeeMachine is a class that represents a coffee machine
+ */
 public class CoffeeMachine {
 
     private final ResourcesContainer container;
-    private CoffeeMachineState machineState;
-
     private final Map<Coffee, Integer> priceList;
+    private CoffeeMachineState machineState;
     private int money;
 
-    public CoffeeMachine() {
-        container = new ResourcesContainer(400, 540, 120, 9);
+    public CoffeeMachine(ResourcesContainer resourcesContainer) {
+        container = resourcesContainer;
         machineState = CoffeeMachineState.TURNED_OFF;
 
-        priceList = new HashMap<>();
+        priceList = new EnumMap<>(Coffee.class);
         money = 550;
 
         setPriceList();
     }
 
-    private void setPriceList() {
-        priceList.put(Coffee.ESPRESSO, 4);
-        priceList.put(Coffee.LATTE, 7);
-        priceList.put(Coffee.CAPPUCCINO, 6);
-    }
-
+    /**
+     * Press the power button to turn the coffee machine on or off
+     */
     public void pressPowerButton() {
         machineState = machineState == CoffeeMachineState.TURNED_OFF ?
                 CoffeeMachineState.CHOOSING_AN_ACTION :
@@ -36,14 +35,47 @@ public class CoffeeMachine {
         showMessage(machineState.getMessage());
     }
 
+    /**
+     * Given the user's input, the machine will make the appropriate action
+     *
+     * @param userOption The user's input.
+     */
     public void interact(String userOption) {
         switch (machineState) {
             case CHOOSING_AN_ACTION -> makeAction(userOption);
             case CHOOSING_A_COFFEE -> chooseCoffeeProcess(userOption);
             case FILL -> fillProcess(userOption);
+            default -> {
+                showMessage(machineState.getMessage());
+                return;
+            }
         }
 
         showMessage(machineState.getMessage());
+    }
+
+    /**
+     * Get the current state of the coffee machine.
+     *
+     * @return The state of the coffee machine.
+     */
+    public CoffeeMachineState getMachineState() {
+        return machineState;
+    }
+
+    /**
+     * It sets the machine state.
+     *
+     * @param machineState The state of the machine.
+     */
+    public void setMachineState(CoffeeMachineState machineState) {
+        this.machineState = machineState;
+    }
+
+    private void setPriceList() {
+        priceList.put(Coffee.ESPRESSO, 4);
+        priceList.put(Coffee.LATTE, 7);
+        priceList.put(Coffee.CAPPUCCINO, 6);
     }
 
     private void fillProcess(String userOption) {
@@ -75,8 +107,8 @@ public class CoffeeMachine {
 
     private void makeAction(String action) {
         switch (action) {
-            case "buy" -> machineState = CoffeeMachineState.CHOOSING_A_COFFEE;
-            case "fill" -> machineState = CoffeeMachineState.FILL;
+            case "buy" -> setMachineState(CoffeeMachineState.CHOOSING_A_COFFEE);
+            case "fill" -> setMachineState(CoffeeMachineState.FILL);
             case "remaining" -> displayRemaining();
             case "take" -> take();
             case "exit" -> exit();
@@ -153,9 +185,5 @@ public class CoffeeMachine {
 
     private void showMessage(String message) {
         System.out.printf("\n%s\n", message);
-    }
-
-    public CoffeeMachineState getMachineState() {
-        return machineState;
     }
 }

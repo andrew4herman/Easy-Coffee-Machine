@@ -1,5 +1,8 @@
 package machine;
 
+/**
+ * Simple enum class that represents the state of the coffee machine
+ */
 public enum CoffeeMachineState {
 
     TURNED_OFF("Press the power button to turn the machine on..."),

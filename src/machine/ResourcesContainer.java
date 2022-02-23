@@ -1,5 +1,8 @@
 package machine;
 
+/**
+ * A class that represents the resources available to make a cup of coffee
+ */
 public class ResourcesContainer {
 
     private int mlOfWater;
@@ -30,6 +33,14 @@ public class ResourcesContainer {
         return cups;
     }
 
+    /**
+     * Add the given resources to the current resources
+     *
+     * @param mlOfWater       The amount of water in milliliters.
+     * @param mlOfMilk        The amount of ml of milk to add to the coffee machine.
+     * @param grOfCoffeeBeans The amount of coffee beans the coffee machine has.
+     * @param cups            The number of disposable cups of coffee the coffee machine has.
+     */
     public void addResources(int mlOfWater, int mlOfMilk, int grOfCoffeeBeans, int cups) {
         this.mlOfWater += mlOfWater;
         this.mlOfMilk += mlOfMilk;
@@ -37,6 +48,15 @@ public class ResourcesContainer {
         this.cups += cups;
     }
 
+    /**
+     * Takes resources from the container
+     *
+     * @param mlOfWater       The amount of water to use.
+     * @param mlOfMilk        The amount of milk in milliliters (mL) to use.
+     * @param grOfCoffeeBeans The number of grams of coffee beans needed to make the cup of coffee.
+     * @param cups            The number of cups of coffee the user wants to take.
+     * @throws NotEnoughResourcesException If there aren't enough resources
+     */
     public void useResources(int mlOfWater, int mlOfMilk, int grOfCoffeeBeans, int cups)
             throws NotEnoughResourcesException {
         String error = "";

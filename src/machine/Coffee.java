@@ -1,5 +1,8 @@
 package machine;
 
+/**
+ * Simple enum class that represents the different types of coffee.
+ */
 public enum Coffee {
 
     ESPRESSO(250, 0, 16),

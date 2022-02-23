@@ -1,37 +1,19 @@
 package machine;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * A class that represents the resources available to make a cup of coffee
  */
+@AllArgsConstructor
+@Getter
 public class ResourcesContainer {
 
     private int mlOfWater;
     private int mlOfMilk;
     private int grOfCoffeeBeans;
     private int cups;
-
-    public ResourcesContainer(int mlOfWater, int mlOfMilk, int grOfCoffeeBeans, int cups) {
-        this.mlOfWater = mlOfWater;
-        this.mlOfMilk = mlOfMilk;
-        this.grOfCoffeeBeans = grOfCoffeeBeans;
-        this.cups = cups;
-    }
-
-    public int getMlOfWater() {
-        return mlOfWater;
-    }
-
-    public int getMlOfMilk() {
-        return mlOfMilk;
-    }
-
-    public int getGrOfCoffeeBeans() {
-        return grOfCoffeeBeans;
-    }
-
-    public int getCups() {
-        return cups;
-    }
 
     /**
      * Add the given resources to the current resources

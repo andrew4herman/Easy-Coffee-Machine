@@ -6,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         ResourcesContainer resourcesContainer = new ResourcesContainer(400, 540, 120, 9);
+
         CoffeeMachine coffeeMachine = new CoffeeMachine(resourcesContainer);
         coffeeMachine.pressPowerButton();
 

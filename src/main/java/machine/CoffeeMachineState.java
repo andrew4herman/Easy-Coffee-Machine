@@ -1,8 +1,13 @@
 package machine;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * Simple enum class that represents the state of the coffee machine
  */
+@RequiredArgsConstructor
+@Getter
 public enum CoffeeMachineState {
 
     TURNED_OFF("Press the power button to turn the machine on..."),
@@ -13,12 +18,4 @@ public enum CoffeeMachineState {
             "and disposable cups you want to add(separated by space):");
 
     private final String message;
-
-    CoffeeMachineState(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

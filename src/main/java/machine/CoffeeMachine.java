@@ -64,6 +64,15 @@ public class CoffeeMachine {
     }
 
     /**
+     * Get the count of money in the coffee machine.
+     *
+     * @return The money variable.
+     */
+    public int getMoney() {
+        return money;
+    }
+
+    /**
      * It sets the machine state.
      *
      * @param machineState The state of the machine.
